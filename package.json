@@ -1,5 +1,5 @@
 {
-  "name": "v1",
+  "name": "open-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -20,7 +20,10 @@
     "@vue/eslint-config-prettier": "^8.0.0",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
+    "node-sass": "^9.0.0",
     "prettier": "^3.0.3",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2",
     "vite": "^4.4.11"
   }
 }
