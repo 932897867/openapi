@@ -1,10 +1,84 @@
 <script setup>
 import { ref, reactive } from 'vue'
-let count = ref(0)
+import { useCounterStore } from "../../stores/counter"
+import { officeStore } from "../../stores/office"
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from "vue";
+import asideMenu from "@/view/layout/components/menu/menu.js";
+import {
+  getTest,
+  postText
+} from "../../axios/index";
+
+getTest()
+  .then((response) => {
+    console.log("结果", response);
+  })
+  .catch((error) => {
+    console.log(error)
+    console.log("获取失败！");
+  });
+
+let params = {
+  custName: '123'
+};
+postText(params)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((error) => {
+    console.log(error)
+    console.log("获取失败！");
+  });
+
+const router = useRouter()
+const route = useRoute()
+
+
+const isCollapse = ref(false)
 const handleClickToggle = () => {
-  console.log(count.value++)
-  console.log(count)
+  console.log('ddd')
+  isCollapse.value = !isCollapse.value
 }
+
+const store = useCounterStore()
+
+
+const officeStoreInst = officeStore()
+officeStoreInst.counter = 3
+
+// const handleClickButton1 = () => {
+//   officeStoreInst.increment()
+//   router.push({
+//     name: 'about1'
+//   })
+// }
+
+// const handleClickButton2 = () => {
+//   officeStoreInst.increment()
+//   router.push({
+//     name: 'about2'
+//   })
+// }
+
+// const handleClickButton3 = () => {
+//   officeStoreInst.increment()
+//   router.push({
+//     path: '/'
+//   })
+// }
+const envParam = import.meta.env
+
+
+const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+
+// handleOpen(1, ['1'])
+
 </script>
 
 <template>
@@ -17,24 +91,71 @@ const handleClickToggle = () => {
       <div class="left">
         <div class="menu-toggle">
           <div class="bar-box">
-            <open-icon name="bars" @click="handleClickToggle"></open-icon>
+            <open-icon name="reorder" @click="handleClickToggle"></open-icon>
           </div>
           <div></div>
+
         </div>
         <div class="menu-item">
-          menu-item
+          <el-menu default-active="1" class="menu-box" :collapse="isCollapse" @open="handleOpen"
+            @close="handleClose">
+            <el-sub-menu index="1">
+              <template #title>
+                <el-icon>
+                  <location />
+                </el-icon>
+                <span>Navigator One</span>
+              </template>
+              <el-menu-item-group>
+                <template #title><span>Group One</span></template>
+                <el-menu-item index="1-1"><open-icon name="map-marker"></open-icon><span>item one</span></el-menu-item>
+                <el-menu-item index="1-2">item two</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group title="Group Two">
+                <el-menu-item index="1-3">item three</el-menu-item>
+              </el-menu-item-group>
+              <el-sub-menu index="1-4">
+                <template #title><span>item four</span></template>
+                <el-menu-item index="1-4-1">item one</el-menu-item>
+              </el-sub-menu>
+            </el-sub-menu>
+            <el-menu-item index="2">
+              <el-icon>
+                <Menu />
+              </el-icon>
+              <template #title>Navigator Two</template>
+            </el-menu-item>
+            <el-menu-item index="3" disabled>
+              <el-icon>
+                <document />
+              </el-icon>
+              <template #title>Navigator Three</template>
+            </el-menu-item>
+            <el-menu-item index="4">
+              <el-icon>
+                <setting />
+              </el-icon>
+              <template #title>Navigator Four</template>
+            </el-menu-item>
+          </el-menu>
         </div>
         <div class="menu-parent">
-          menu-parent
+          parent
         </div>
       </div>
       <div class="right">
         <div class="operation">
           operation
         </div>
-
         <div class="content">
-          content
+          <div class="content-inner">
+            {{ officeStoreInst.counter }} /
+            {{ officeStoreInst.doubleCount }} /
+            {{ officeStoreInst.doublePlusOne }} /
+            {{ officeStoreInst.getUserById(0) }}
+            <RouterView></RouterView>
+            {{ envParam }}
+          </div>
         </div>
       </div>
     </div>
@@ -65,12 +186,14 @@ const handleClickToggle = () => {
     display: flex;
     flex-direction: row;
     .left {
-      width: 200px;
+      // width: 200px;
+      max-width: 200px;
+      overflow: hidden;
       background-color: #EFEFEF;
       display: flex;
       flex-direction: column;
-      flex-grow: 0;
-      flex-shrink: 0;
+      // flex-grow: 0;
+      // flex-shrink: 0;
       .menu-toggle {
         height: 42px;
         flex-grow: 0;
@@ -104,6 +227,14 @@ const handleClickToggle = () => {
         background-color: #fff;
         flex-grow: 1;
         flex-shrink: 1;
+        max-width: 200px;
+        overflow-x: auto;
+        overflow-y: auto;
+        // overflow-y: hidden;
+        .menu-box {
+          // height: 100%;
+          
+        }
       }
 
       .menu-parent {
@@ -135,6 +266,15 @@ const handleClickToggle = () => {
         flex-shrink: 1;
         display: flex;
         justify-content: center;
+        .content-inner {
+          width: 90%;
+          background-color: #fff;
+          // display: flex;
+          // flex-grow: 0;
+          // flex-shrink: 0;
+          // justify-content: center;
+          // align-items: flex-start;
+        }
       }
     }
   }

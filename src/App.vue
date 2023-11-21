@@ -81,5 +81,24 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+
 }
+
+
+</style>
+
+<style lang='scss'>
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+  position: absolute;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #1890ff;
+}
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
 </style>
