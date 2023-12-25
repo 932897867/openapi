@@ -1,6 +1,7 @@
 <template>
   <div>
     <child :title="title" :setTitle="setTitle" />
+    <router-view></router-view>
   </div>
 </template>
 
