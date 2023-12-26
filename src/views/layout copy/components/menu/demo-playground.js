@@ -1,6 +1,4 @@
-import {  ref, defineComponent } from 'vue'
-
-const menus = {
+export default {
   path: '/demo/playground',
   title: '功能',
   icon: 'flask',
@@ -133,56 +131,3 @@ const menus = {
     { path: '/demo/playground/locales', title: '国际化', icon: 'language' }
   ]
 }
-
-const createMenu = (menu) => {
-  console.log(menu)
-  return <el-menu-item index={menu.title}>
-    {menu.title}
-    </el-menu-item>
-}
-
-
-export default defineComponent({
-
-  setup() {
-    const activeIndex2 = ref('1')
-    const handleSelect = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-    const render = ()=>{
-
-      return <div>
-        <el-menu
-            default-active={activeIndex2}
-            class="el-menu-demo"
-            mode="horizontal"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-            onSelect={handleSelect}
-          >
-            <el-menu-item index="1">Processing Center</el-menu-item>
-            { menus.children.map(menu => createMenu(menu)) }
-            {/* <el-menu-item index="1">Processing Center</el-menu-item>
-            <el-sub-menu index="2" v-slots={{
-                title: () => 'Workspace'
-              }}>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-              <el-sub-menu index="2-4" v-slots={{
-                title: () => 'item four'
-              }}>
-                <el-menu-item index="2-4-1">item one</el-menu-item>
-                <el-menu-item index="2-4-2">item two</el-menu-item>
-                <el-menu-item index="2-4-3">item three</el-menu-item>
-              </el-sub-menu>
-            </el-sub-menu>
-            <el-menu-item index="3" disabled>Info</el-menu-item>
-            <el-menu-item index="4">Orders</el-menu-item> */}
-          </el-menu>
-        </div>
-    }
-    return render
-  }
-})
