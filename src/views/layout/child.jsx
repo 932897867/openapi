@@ -1,6 +1,6 @@
 import {  ref, defineComponent } from 'vue'
 
-const menus = {
+const menus = [{
   path: '/demo/playground',
   title: '功能',
   icon: 'flask',
@@ -132,13 +132,33 @@ const menus = {
     { path: '/demo/playground/env', title: '环境信息', icon: 'exclamation-circle' },
     { path: '/demo/playground/locales', title: '国际化', icon: 'language' }
   ]
+}]
+
+const elMenuItem = (menu) => {
+  let icon = null
+  console.log(menu)
+  if (menu.icon) icon = <i class={ `fa fa-${menu.icon}` }/>
+  else if (menu.iconSvg) icon = <d2-icon-svg name={ menu.iconSvg }/>
+  else icon = <i class="fa fa-file-o"/>
+  return <el-menu-item
+    key={ menu.path }
+    index={ menu.path }>
+    {/* { icon } */}
+    <span slot="title">{ menu.title || '未命名菜单' }</span>
+  </el-menu-item>
+}
+
+
+const elSubmenu = () => {
+
 }
 
 const createMenu = (menu) => {
   console.log(menu)
-  return <el-menu-item index={menu.title}>
-    {menu.title}
-    </el-menu-item>
+  if (menu.children === undefined) return elMenuItem(menu)
+  return elSubmenu(menu)
+
+
 }
 
 
@@ -162,7 +182,7 @@ export default defineComponent({
             onSelect={handleSelect}
           >
             <el-menu-item index="1">Processing Center</el-menu-item>
-            { menus.children.map(menu => createMenu(menu)) }
+            { menus.map(menu => createMenu(menu)) }
             {/* <el-menu-item index="1">Processing Center</el-menu-item>
             <el-sub-menu index="2" v-slots={{
                 title: () => 'Workspace'
